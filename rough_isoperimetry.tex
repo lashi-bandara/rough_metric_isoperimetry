@@ -1,0 +1,1006 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[a4paper,margin=2.8cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=blue!45!black,
+  urlcolor=blue!45!black
+}
+\setlist[itemize]{leftmargin=*,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=*,itemsep=0.25em,topsep=0.4em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\M}{M}
+\newcommand{\Met}{\operatorname{Met}}
+\newcommand{\dMet}{d_{\ell_M}}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\Per}{\operatorname{Per}}
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\BV}{\operatorname{BV}}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\esssup}{\operatorname*{ess\,sup}}
+\newcommand{\dmu}[1]{\,d\mu_{#1}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\hch}{\mathsf h}
+
+\title[Rough isoperimetry]{Rough isoperimetry\\
+\large A direct programme and first theorems}
+\author{Glen Wheeler}
+\author{Lashi Bandara}
+\date{11 August 2026}
+
+\begin{document}
+
+\begin{abstract}
+We propose a short route from the structure theory of rough Riemannian
+metrics to geometric variational problems.  There is one important codimension-one subtlety: a
+measurable metric is defined only up to sets of ambient measure zero, and hence
+cannot naively be restricted to a hypersurface.  We use instead the
+$L^1$-relaxation of the metric total variation, in the spirit of
+Amar--Bellettini.  On a compact manifold we prove existence of isoperimetric
+regions of every prescribed volume, continuity of the rough isoperimetric
+profile (with local H\"older regularity), and compactness and convergence of
+minimisers under convergence in the Bandara--Hassan metric on the space of
+rough metrics.  The normalised profiles obey a locally uniform
+$(n-1)/n$-H\"older stability estimate.  We also prove a
+rough Cheeger inequality and explicit log-Lipschitz estimates for the
+isoperimetric constant, the Cheeger constant, and every positive eigenvalue of
+the rough Laplacian.  This is, I feel, a substantial package of theorems.
+\end{abstract}
+
+\maketitle
+
+\section{The recommendation}
+
+Consider the isoperimetric problem
+\begin{equation}\label{eq:direct-problem}
+ \min\bigl\{\Per_g(E):\mu_g(E)=v\bigr\}.
+\end{equation}
+For smooth $g$, the regular boundary of a minimiser has constant mean
+curvature.  
+ For a
+merely measurable $g$, the equation $H=\lambda$ is not meaningful pointwise, but
+\eqref{eq:direct-problem} remains meaningful and gives a natural
+definition of a \emph{variational rough CMC analogue}.
+
+Lashi's observations make this particularly nice.
+A rough metric gives a
+Radon measure, common $L^p$ and Sobolev spaces throughout each component of
+the space of rough metrics, a closed Dirichlet form and Laplacian, and a
+canonical intrinsic distance.  More recently, the collection of rough
+metrics itself has been made into a complete length space
+\cite{BandaraHassan2025}.  On a compact manifold every pair of rough metrics
+lies at finite distance.  The distance is exactly strong enough to compare
+volume, codimension-one energy, and Dirichlet energy with explicit constants.
+
+The proposed short paper therefore has three layers.
+
+\begin{itemize}
+\item Define a canonical relaxed perimeter and solve
+  \eqref{eq:direct-problem} for every $v$.
+\item Prove that the entire isoperimetric problem is stable as the rough
+  metric moves in the Bandara--Hassan space, quantitatively on interior volume
+  fractions.
+\item Join this geometric side to Lashi's operator-theoretic side through a
+  rough Cheeger inequality and quantitative spectral stability.
+\end{itemize}
+
+I have had a go at all three layers below.  The main remaining problem is regularity: how much regularity of $g$ is needed to
+upgrade this variational analogue to a recognisable hypersurface satisfying a
+weak or classical CMC equation?
+
+The direct method and the abstract Cheeger mechanism are classical; we do not
+claim otherwise.  The short-paper contribution proposed here is their unified
+formulation for almost-everywhere measurable metrics in the
+Bandara--Hassan topology, the sharp codimension-one comparison, and the joint
+stability of profiles and minimisers with quantitative constants.
+For a smooth-metric profile-stability argument based on perimeter comparison,
+compactness, and volume repair, see also Zheng \cite{Zheng2020}.  The point here
+is the extension to relaxed perimeter for measurable coefficients and the
+$d_{\ell_M}$ topology.
+
+\section{A codimension-one point to fix}
+
+A rough metric is an almost-everywhere equivalence class.  A hypersurface has
+zero $n$-dimensional measure.  Consequently, the expression ``the metric
+induced by $g$ on the hypersurface'' is not determined by the rough metric:
+one could change $g$ on that hypersurface without changing the rough metric at
+all.
+
+There is a related functional-analytic issue.
+If rough mass is defined by testing a current only against \emph{smooth}
+forms satisfying an almost-everywhere comass bound, the smooth test class can
+fail to see the discontinuities of the coefficients.  Amar and Bellettini
+identified exactly this phenomenon for discontinuous Finsler metrics; they
+showed in particular that smooth test fields may be inadequate
+\cite{AmarBellettini1994}.  Their remedy is a lower-semicontinuous generalised
+total variation, equivalently described by relaxation and by a larger class
+of divergence-controlled fields.
+This enables more straightforward existence proofs.
+
+\section{Rough metrics and relaxed perimeter}
+
+Let $M^n$ be a smooth, compact, connected manifold without boundary, with
+$n\geq2$.  Orientation is not needed.  A \emph{rough Riemannian metric} $g$ is
+a measurable positive-definite symmetric two-tensor such that, relative to
+one (and hence every) smooth background metric, both $g$ and $g^{-1}$ are
+essentially bounded.  Equivalently, $g$ is locally bounded and locally
+elliptic.  It induces the Radon measure $\mu_g$ and a measurable dual norm
+$|\xi|_{g^*}$ on covectors.
+
+For $g,\widetilde g\in\Met(M)$, write
+\begin{equation}\label{eq:metric-on-metrics}
+ \dMet(g,\widetilde g)
+ :=\inf\left\{\log C:
+ C^{-1}|X|_g\leq |X|_{\widetilde g}\leq C|X|_g
+ \text{ a.e. for every }X\in TM\right\}.
+\end{equation}
+This is the Bandara--Hassan metric, with notation slightly shortened.  Since
+$M$ is compact, it is finite for every pair of rough metrics
+\cite{BandaraHassan2025}.
+
+For $u\in L^1(M,\mu_g)$ define
+\begin{equation}\label{eq:rough-TV}
+ \TV_g(u):=\inf\left\{
+ \liminf_{j\to\infty}\int_M |du_j|_{g^*}\dmu g:
+ u_j\in C^\infty(M),\quad u_j\to u\text{ in }L^1(M,\mu_g)
+ \right\}.
+\end{equation}
+For a measurable set $E\subset M$, its relaxed rough perimeter is
+\begin{equation}\label{eq:rough-perimeter}
+ \Per_g(E):=\TV_g(\one_E).
+\end{equation}
+This depends only on the almost-everywhere class of $g$, is lower
+semicontinuous under $L^1$ convergence, and agrees with ordinary Riemannian
+perimeter when $g$ is smooth.  In local charts it is the relaxed total
+variation associated with a bounded measurable elliptic Finsler integrand;
+this is the setting developed in
+\cite[Theorem~5.1]{AmarBellettini1994} and
+\cite{BellettiniBouchitteFragala1999}.  Indeed, fix a smooth background metric
+$h$, put $\rho_{g,h}=d\mu_g/d\mu_h$, and set
+\[
+ F_{g,h}(x,\xi):=\rho_{g,h}(x)|\xi|_{g^*}.
+\]
+There are constants $0<c\leq C<\infty$ such that
+\[
+ c|\xi|_{h^*}\leq F_{g,h}(x,\xi)\leq C|\xi|_{h^*},
+ \qquad
+ |F_{g,h}(x,\xi)-F_{g,h}(x,\zeta)|
+ \leq C|\xi-\zeta|_{h^*}
+\]
+almost everywhere.  Smooth density in $W^{1,1}(M,h)$ therefore shows that the
+infimum is unchanged if the approximants are taken in $W^{1,1}$, and permits
+chartwise localisation and partition of unity.  A precise dual formula uses
+the enlarged test-field class of Amar--Bellettini, rather than only smooth
+fields; none of the results below needs that formula.  From now on, unlabelled
+$L^1$ convergence means convergence with respect to $\mu_h$ for one fixed
+smooth $h$; uniform ellipticity makes this equivalent to convergence for any
+rough metric under discussion.
+
+The next elementary linear-algebra estimate is key.
+
+\begin{lemma}[The cofactor estimate]\label{lem:cofactor}
+Let $g,\widetilde g\in\Met(M)$ and set
+$\delta=\dMet(g,\widetilde g)$.  For every $p\geq1$ and every measurable
+covector field $\xi$,
+\begin{align}
+ e^{-n\delta}\,d\mu_g
+ &\leq d\mu_{\widetilde g}\leq e^{n\delta}\,d\mu_g,
+ \label{eq:measure-comparison}\qquad\\
+ e^{-(n+p-2)\delta}|\xi|_{g^*}^p\,d\mu_g
+ &\leq |\xi|_{\widetilde g^*}^p\,d\mu_{\widetilde g}
+ \leq e^{(n+p-2)\delta}|\xi|_{g^*}^p\,d\mu_g.
+ \label{eq:p-energy-comparison}
+\end{align}
+The inequalities are understood as inequalities of measurable densities.
+\end{lemma}
+
+\begin{proof}
+Fix $d>\delta$; at the end let $d\downarrow\delta$.  At almost every point,
+choose a
+$g$-orthonormal basis diagonalising $\widetilde g$ and write
+\[
+ |X|_{\widetilde g}^2=\sum_{i=1}^n s_i^2(X^i)^2,
+ \qquad e^{-d}\leq s_i\leq e^d.
+\]
+Then
+\[
+ \frac{d\mu_{\widetilde g}}{d\mu_g}=\prod_{i=1}^n s_i,
+ \qquad
+ |\xi|_{\widetilde g^*}^2=\sum_{i=1}^n s_i^{-2}\xi_i^2.
+\]
+The first assertion follows immediately.  If
+$s_-:=\min_i s_i$ and $s_+:=\max_i s_i$, then
+\[
+ \left(\prod_i s_i\right)s_+^{-p}|\xi|_{g^*}^p
+ \leq
+ \left(\prod_i s_i\right)|\xi|_{\widetilde g^*}^p
+ \leq
+ \left(\prod_i s_i\right)s_-^{-p}|\xi|_{g^*}^p.
+\]
+One factor in the product is $s_+$ and the other $n-1$ factors are at
+least $e^{-d}$; similarly, one factor is $s_-$ and the other factors
+are at most $e^d$.  Since $p\geq1$,
+\[
+ \left(\prod_i s_i\right)s_+^{-p}\geq e^{-(n+p-2)d},
+ \qquad
+ \left(\prod_i s_i\right)s_-^{-p}\leq e^{(n+p-2)d}.
+\]
+Letting $d\downarrow\delta$ proves the result.
+\end{proof}
+
+The exponent $n-1$ at $p=1$ is precisely the codimension-one exponent; the
+exponent $n$ at $p=2$ controls the Dirichlet form.  The general exponent is
+pointwise sharp: in a $g$-orthonormal frame take
+$s_1=e^{-\delta}$, $s_2=\cdots=s_n=e^\delta$, and let $\xi$ point in the
+first coordinate direction.  The upper density ratio is then exactly
+$e^{(n+p-2)\delta}$.
+
+\begin{proposition}[Uniform comparison of rough perimeters]
+\label{prop:perimeter-comparison}
+Let $g,\widetilde g\in\Met(M)$ and set
+$\delta=\dMet(g,\widetilde g)$.  For every measurable $E\subset M$,
+\begin{equation}\label{eq:perimeter-comparison}
+ e^{-(n-1)\delta}\Per_g(E)
+ \leq \Per_{\widetilde g}(E)
+ \leq e^{(n-1)\delta}\Per_g(E).
+\end{equation}
+In particular, the class of finite-perimeter sets is independent of the rough
+metric on compact $M$.  It is the usual class of Caccioppoli sets for any
+smooth background metric.  Every sequence of characteristic functions with
+uniformly bounded $g$-perimeter has an $L^1$-convergent subsequence;
+equivalently, perimeter sublevels are relatively compact.
+\end{proposition}
+
+\begin{proof}
+The $L^1(M,\mu_g)$ and $L^1(M,\mu_{\widetilde g})$ topologies coincide by
+\eqref{eq:measure-comparison}.  Apply
+\eqref{eq:p-energy-comparison} with $p=1$ to every smooth approximating
+sequence in \eqref{eq:rough-TV}, and then reverse the roles of the metrics.
+Comparison with a fixed smooth metric identifies the finite-perimeter class
+and transfers the standard BV compactness theorem \cite{AFP2000}.
+\end{proof}
+
+We shall also use the lattice inequality
+\begin{equation}\label{eq:lattice}
+ \Per_g(E\cup F)+\Per_g(E\cap F)
+ \leq \Per_g(E)+\Per_g(F).
+\end{equation}
+For $u,v\in W^{1,1}$, the gradients of $u\vee v$ and $u\wedge v$ agree almost
+everywhere with $du,dv$ in the two possible orders.  Hence
+\[
+ F_{g,h}(x,d(u\vee v))+F_{g,h}(x,d(u\wedge v))
+ =F_{g,h}(x,du)+F_{g,h}(x,dv)
+\]
+almost everywhere.  Choose joint smooth near-recovery sequences for
+$\one_E$ and $\one_F$, apply this identity, approximate the resulting maximum
+and minimum strongly in $W^{1,1}(M,h)$, and take a diagonal sequence.  The
+Lipschitz estimate for $F_{g,h}$ above and lower semicontinuity give
+\eqref{eq:lattice}.  In particular,
+\begin{equation}\label{eq:union-cost}
+ \Per_g(E\cup F)\leq\Per_g(E)+\Per_g(F),
+ \qquad
+ \Per_g(E\setminus F)\leq\Per_g(E)+\Per_g(F).
+\end{equation}
+
+\section{Exact-volume rough isoperimetry}
+
+Write $V_g:=\mu_g(M)$.  Define the rough isoperimetric profile by
+\begin{equation}\label{eq:profile}
+ \cI_g(v):=\inf\bigl\{\Per_g(E):E\subset M\text{ measurable},\
+ \mu_g(E)=v\bigr\},
+ \qquad 0\leq v\leq V_g.
+\end{equation}
+
+\begin{lemma}[The constraint class is nonempty]\label{lem:constraint}
+For every $v\in[0,V_g]$ there is a finite-perimeter set $E$ with
+$\mu_g(E)=v$.
+\end{lemma}
+
+\begin{proof}
+Take a finite smooth triangulation, subdivided to be subordinate to a finite
+coordinate atlas, and order its $n$-simplices.  Their
+boundaries have zero $\mu_g$-measure.  Add simplex interiors until the target
+volume lies in the next simplex.  In a smooth coordinate chart on that
+simplex, sweep the remaining part by parallel coordinate hyperplanes.  The
+enclosed $\mu_g$-volume is a continuous function of the sweep parameter: the
+density of $\mu_g$ is bounded and positive relative to smooth volume, and
+each slicing hyperplane is null.  The intermediate value theorem gives the
+exact remaining volume.  The resulting set has piecewise smooth boundary and
+hence finite perimeter for a smooth background metric, and therefore for $g$
+by Proposition~\ref{prop:perimeter-comparison}.
+\end{proof}
+
+\begin{theorem}[Existence of rough isoperimetric regions]
+\label{thm:existence}
+For every $v\in[0,V_g]$ there is a finite-perimeter set $E_v$ such that
+\[
+ \mu_g(E_v)=v,
+ \qquad
+ \Per_g(E_v)=\cI_g(v).
+\]
+Moreover, $\cI_g(v)=\cI_g(V_g-v)$, and $\cI_g(v)>0$ for
+$0<v<V_g$.
+\end{theorem}
+
+\begin{proof}
+The endpoint cases are immediate, and Lemma~\ref{lem:constraint} makes the
+infimum finite.  Let $E_j$ be a minimising sequence at an interior volume.
+Its $g$-perimeters are bounded.  Proposition~\ref{prop:perimeter-comparison}
+and BV compactness for a fixed smooth background metric give, after passage
+to a subsequence,
+\[
+ \one_{E_j}\longrightarrow\one_E\quad\text{in }L^1(M).
+\]
+The density of $\mu_g$ relative to smooth volume is bounded, so
+$\mu_g(E)=v$.  Lower semicontinuity of \eqref{eq:rough-TV} gives
+\[
+ \Per_g(E)\leq\liminf_{j\to\infty}\Per_g(E_j)=\cI_g(v).
+\]
+Thus $E$ is a minimiser.  Complementation preserves perimeter and interchanges
+$v$ with $V_g-v$, proving symmetry.
+
+For positivity, fix a smooth metric $h$ and let
+$D=\dMet(g,h)$.  The smooth relative isoperimetric inequality and
+\eqref{eq:measure-comparison}--\eqref{eq:perimeter-comparison} give
+\begin{equation}\label{eq:rough-relative-iso}
+ \Per_g(E)\geq c_h e^{-2(n-1)D}
+ \min\{\mu_g(E),\mu_g(M\setminus E)\}^{\frac{n-1}{n}}.
+\end{equation}
+This is positive at a nontrivial prescribed volume.
+\end{proof}
+
+The next lemma is the small device that yields both continuity of the profile
+and stability under change of metric.
+
+\begin{lemma}[Uniform repair of a small volume error]
+\label{lem:uniform-repair}
+Fix a smooth metric $h_0$ on $M$, and let $D,\alpha>0$.  Set
+\[
+ \mathcal B_D(h_0):=\{q\in\Met(M):\dMet(q,h_0)\leq D\},
+ \qquad \gamma:=\frac{n-1}{n}.
+\]
+There are constants $s_0=s_0(M,h_0,\alpha)>0$ and
+$C=C(M,h_0,D,\alpha)<\infty$ with the following property.  If
+$q\in\mathcal B_D(h_0)$ and $E$ has finite $q$-perimeter with
+\[
+ \min\{\mu_q(E),\mu_q(M\setminus E)\}\geq\alpha,
+\]
+then, for every $s\in\R$ with $|s|\leq s_0$, there is a finite-perimeter set
+$E_s$ such that
+\begin{equation}\label{eq:uniform-repair}
+ \mu_q(E_s)=\mu_q(E)+s,
+ \qquad
+ \Per_q(E_s)\leq\Per_q(E)+C|s|^\gamma,
+ \qquad
+ \mu_q(E_s\mathbin\triangle E)=|s|.
+\end{equation}
+The constants are uniform in both $q$ and $E$.
+\end{lemma}
+
+\begin{proof}
+Choose $r_0>0$ smaller than the injectivity radius of $(M,h_0)$.  By
+compactness, after decreasing $r_0$ if necessary, there are $a_0,b_0>0$ such
+that, for every $x\in M$ and $0<r<r_0$,
+\[
+ \mu_{h_0}(B_{h_0}(x,r))\geq a_0r^n,
+ \qquad
+ \Per_{h_0}(B_{h_0}(x,r))\leq b_0r^{n-1}.
+\]
+Put $\kappa:=a_0/\mu_{h_0}(M)$.  If $A\subset M$ is measurable and
+$\mu_q(A)\geq\alpha$, Fubini's theorem gives
+\begin{align*}
+ \int_M\mu_q(A\cap B_{h_0}(x,r))\dmu{h_0}
+ &=\int_A\mu_{h_0}(B_{h_0}(y,r))\dmu q\\
+ &\geq a_0r^n\mu_q(A).
+\end{align*}
+Consequently, for some $x=x(A,r)$,
+\begin{equation}\label{eq:averaging-ball}
+ \mu_q(A\cap B_{h_0}(x,r))\geq\kappa\alpha r^n.
+\end{equation}
+Take
+\[
+ s_0:=\min\left\{\frac{\alpha}{2},
+       \kappa\alpha\left(\frac{r_0}{2}\right)^n\right\}.
+\]
+Suppose first that $0<s\leq s_0$, set
+$r=(s/(\kappa\alpha))^{1/n}\leq r_0/2$, and apply
+\eqref{eq:averaging-ball} with $A=M\setminus E$.  For the resulting centre
+$x$, the function
+\[
+ \rho\longmapsto
+ \mu_q((M\setminus E)\cap B_{h_0}(x,\rho))
+\]
+is continuous on $[0,r]$: every $h_0$-geodesic sphere of radius below $r_0$
+is smooth and hence $\mu_q$-null.  It is zero at $\rho=0$ and at least $s$ at
+$\rho=r$.  Thus some $\rho\leq r$ makes it equal to $s$.  Set
+$E_s=E\cup B_{h_0}(x,\rho)$.  The lattice inequality and the perimeter
+comparison give
+\begin{align*}
+ \Per_q(E_s)
+ &\leq\Per_q(E)+\Per_q(B_{h_0}(x,\rho))\\
+ &\leq\Per_q(E)+e^{(n-1)D}b_0\rho^{n-1}\\
+ &\leq\Per_q(E)+e^{(n-1)D}b_0
+       (\kappa\alpha)^{-\gamma}s^\gamma.
+\end{align*}
+For $-s_0\leq s<0$, apply the same argument with $A=E$ and set
+$E_s=E\setminus B_{h_0}(x,\rho)$.  The symmetric-difference identity is
+immediate from the construction, and the case $s=0$ is trivial.
+\end{proof}
+
+\begin{proposition}[Continuity and local H\"older regularity]
+\label{prop:profile-continuity}
+The function $\cI_g:[0,V_g]\to[0,\infty)$ is continuous.  More precisely,
+for every compact interval $K\Subset(0,V_g)$ there is $C_K<\infty$ such that
+\begin{equation}\label{eq:profile-holder}
+ |\cI_g(v)-\cI_g(w)|\leq C_K|v-w|^{(n-1)/n}
+ \qquad(v,w\in K).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Fix a smooth metric $h$ on $M$.
+For fixed $x$ and all small radii, the function
+$r\mapsto\mu_g(B_h(x,r))$ is continuous and strictly increasing, while
+$\Per_g(B_h(x,r))\leq Cr^{n-1}$.  Exact-volume balls therefore show that
+$\cI_g(v)\to0$ as $v\downarrow0$; symmetry handles the other endpoint.  Now
+write $K=[a,b]$ and set $\alpha=\min\{a,V_g-b\}>0$.  Apply
+Lemma~\ref{lem:uniform-repair} with $h_0=h$, $D=\dMet(g,h)$, and $q=g$.
+If $|v-w|\leq s_0$, repair a
+$g$-isoperimetric region of volume $v$ by $s=w-v$ to obtain
+\[
+ \cI_g(w)\leq\cI_g(v)+C|v-w|^{(n-1)/n}.
+\]
+Interchanging $v$ and $w$ gives the reverse inequality.  For arbitrary
+$v,w\in K$, divide the interval between them into $m$ equal pieces, where
+$m\leq1+V_g/s_0$ and each piece has length at most $s_0$.  Summing the local
+estimate gives
+\[
+ |\cI_g(v)-\cI_g(w)|
+ \leq C m^{1/n}|v-w|^{(n-1)/n},
+\]
+which proves \eqref{eq:profile-holder} and interior continuity.
+\end{proof}
+
+\section{Stability in the space of rough metrics}
+
+The following is the main geometric payoff of using Lashi's metric on the
+space of metrics.
+
+\begin{theorem}[Stability of rough isoperimetry]
+\label{thm:profile-stability}
+Suppose $g_j,g\in\Met(M)$ and
+\[
+ \dMet(g_j,g)\longrightarrow0.
+\]
+Let $v_j\to v$ with $0<v<V_g$ and $0<v_j<V_{g_j}$.  Then
+\begin{equation}\label{eq:profile-convergence}
+ \cI_{g_j}(v_j)\longrightarrow\cI_g(v).
+\end{equation}
+If $E_j$ is a $g_j$-isoperimetric region of volume $v_j$, then a subsequence
+converges in $L^1$ to a $g$-isoperimetric region $E$ of volume $v$, and
+\begin{equation}\label{eq:minimiser-perimeter-convergence}
+ \Per_{g_j}(E_j)\longrightarrow\Per_g(E).
+\end{equation}
+In particular, for each fixed volume fraction $\theta\in(0,1)$,
+\[
+ \cI_{g_j}(\theta V_{g_j})\longrightarrow\cI_g(\theta V_g).
+\]
+\end{theorem}
+
+\begin{proof}
+Let $E$ be a $g$-isoperimetric region of volume $v$.  By
+\eqref{eq:measure-comparison},
+\[
+ s_j:=v_j-\mu_{g_j}(E)\longrightarrow0.
+\]
+Fix a smooth $h_0$.  For all large $j$, the metrics $g_j$ lie in one ball
+$\mathcal B_D(h_0)$ and both phases of $E$ have $g_j$-volume at least some
+$\alpha>0$.  Lemma~\ref{lem:uniform-repair}, applied with $q=g_j$, gives
+$F_j$ of exact $g_j$-volume $v_j$ and
+\[
+ \Per_{g_j}(F_j)\leq\Per_{g_j}(E)+o(1).
+\]
+Proposition~\ref{prop:perimeter-comparison} implies
+$\Per_{g_j}(E)\to\Per_g(E)$.  Consequently,
+\begin{equation}\label{eq:stability-limsup}
+ \limsup_{j\to\infty}\cI_{g_j}(v_j)\leq\cI_g(v).
+\end{equation}
+
+For the matching lower bound, pass first to a subsequence realising
+$\liminf_j\cI_{g_j}(v_j)$, and take $g_j$-isoperimetric regions $E_j$.  The
+preceding upper bound and \eqref{eq:perimeter-comparison} bound
+$\Per_g(E_j)$.  BV compactness gives, after a further subsequence,
+$\one_{E_j}\to\one_E$ in $L^1$.  The estimate
+\[
+ \bigl|\mu_{g_j}(A)-\mu_g(A)\bigr|
+ \leq (e^{n\delta_j}-1)\mu_g(A),
+ \qquad \delta_j:=\dMet(g_j,g),
+\]
+is uniform over measurable sets $A$.  Together with $L^1$ convergence it
+therefore gives
+\[
+ \mu_g(E)=\lim_{j\to\infty}\mu_g(E_j)
+ =\lim_{j\to\infty}\mu_{g_j}(E_j)=v.
+\]
+Moreover,
+\[
+ \Per_g(E_j)\leq e^{(n-1)\delta_j}\Per_{g_j}(E_j).
+\]
+The right-hand side is bounded by the limsup construction.  Hence lower
+semicontinuity and $\delta_j\to0$ give
+\[
+ \cI_g(v)\leq\Per_g(E)
+ \leq\liminf_{j\to\infty}\Per_g(E_j)
+ \leq\liminf_{j\to\infty}\Per_{g_j}(E_j).
+\]
+Together with \eqref{eq:stability-limsup}, this proves the asserted convergence
+\eqref{eq:profile-convergence}.  The same compactness argument applied to any
+sequence of minimisers produces a limit $E$ for which equality holds
+throughout; hence $E$ is minimising and
+\eqref{eq:minimiser-perimeter-convergence} follows.
+\end{proof}
+
+For $q\in\Met(M)$ define the normalised profile
+\[
+ \widehat{\cI}_q(\theta):=\cI_q(\theta V_q),
+ \qquad 0\leq\theta\leq1.
+\]
+
+\begin{corollary}[Quantitative stability of normalised profiles]
+\label{cor:normalized-profile-holder}
+Fix $g\in\Met(M)$ and $0<\varepsilon<1/2$.  There are
+$\delta_*>0$ and $C<\infty$ such that, whenever
+$\delta:=\dMet(g,\widetilde g)\leq\delta_*$,
+\begin{equation}\label{eq:normalized-profile-holder}
+ \sup_{\theta\in[\varepsilon,1-\varepsilon]}
+ \bigl|\widehat{\cI}_{\widetilde g}(\theta)
+       -\widehat{\cI}_g(\theta)\bigr|
+ \leq C\delta^{(n-1)/n}.
+\end{equation}
+Thus convergence of rough metrics gives locally uniform convergence of their
+normalised isoperimetric profiles, with an explicit H\"older exponent.
+\end{corollary}
+
+\begin{proof}
+Fix a smooth background metric $h_0$ and $\delta_0>0$, and put
+\[
+ D:=\dMet(g,h_0)+\delta_0,
+ \qquad
+ \alpha:=\varepsilon e^{-2n\delta_0}V_g,
+ \qquad
+ \gamma:=\frac{n-1}{n}.
+\]
+Let $s_0,C_R$ be the constants in Lemma~\ref{lem:uniform-repair} for
+$(h_0,D,\alpha)$.  Choose
+$0<\delta_*\leq\min\{\delta_0,1\}$ so small that
+\begin{equation}\label{eq:delta-star-choice}
+ e^{n\delta_0}V_g(e^{n\delta_*}-1)\leq s_0.
+\end{equation}
+
+Fix $\theta\in[\varepsilon,1-\varepsilon]$, and let $E$ be a
+$g$-isoperimetric region with $\mu_g(E)=\theta V_g$.  If
+$J=d\mu_{\widetilde g}/d\mu_g$, then
+$e^{-n\delta}\leq J\leq e^{n\delta}$ and
+\[
+ s:=\theta V_{\widetilde g}-\mu_{\widetilde g}(E)
+   =\int_M(\theta-\one_E)(J-1)\dmu g.
+\]
+Consequently,
+\begin{equation}\label{eq:metric-volume-error}
+ |s|\leq V_g(e^{n\delta}-1).
+\end{equation}
+Both phases of $E$ have $\widetilde g$-volume at least
+$e^{-n\delta}\varepsilon V_g\geq\alpha$.  The uniform repair lemma, with
+$q=\widetilde g$, and the perimeter comparison therefore give
+\begin{equation}\label{eq:profile-two-sided-a}
+ \widehat{\cI}_{\widetilde g}(\theta)
+ \leq e^{(n-1)\delta}\widehat{\cI}_g(\theta)
+   +C_0(e^{n\delta}-1)^\gamma
+\end{equation}
+for a constant $C_0$ independent of $\theta$ and $\widetilde g$.
+
+Conversely, begin with a $\widetilde g$-isoperimetric region
+$\widetilde E$ of volume $\theta V_{\widetilde g}$ and repair its $g$-volume.
+Its two phases have $g$-volume at least
+\[
+ e^{-n\delta}\varepsilon V_{\widetilde g}
+ \geq\varepsilon e^{-2n\delta_0}V_g=\alpha,
+\]
+and the reverse volume error is bounded by
+\[
+ V_{\widetilde g}(e^{n\delta}-1)
+ \leq e^{n\delta_0}V_g(e^{n\delta}-1)\leq s_0.
+\]
+The same argument yields
+\begin{equation}\label{eq:profile-two-sided-b}
+ \widehat{\cI}_g(\theta)
+ \leq e^{(n-1)\delta}\widehat{\cI}_{\widetilde g}(\theta)
+   +C_0(e^{n\delta}-1)^\gamma.
+\end{equation}
+Proposition~\ref{prop:profile-continuity} bounds
+$\widehat{\cI}_g$ on $[\varepsilon,1-\varepsilon]$, and
+\eqref{eq:profile-two-sided-a} then bounds
+$\widehat{\cI}_{\widetilde g}$ there as well.  According as
+$\widehat{\cI}_{\widetilde g}(\theta)\geq\widehat{\cI}_g(\theta)$ or the
+reverse inequality holds, use \eqref{eq:profile-two-sided-a} or
+\eqref{eq:profile-two-sided-b} to obtain
+\[
+ \bigl|\widehat{\cI}_{\widetilde g}(\theta)
+       -\widehat{\cI}_g(\theta)\bigr|
+ \leq C_1\left((e^{(n-1)\delta}-1)
+                +(e^{n\delta}-1)^\gamma\right).
+\]
+Finally, $e^{a\delta}-1\leq C_a\delta$ for $0\leq\delta\leq1$ and
+$\delta\leq\delta^\gamma$ on that interval prove
+\eqref{eq:normalized-profile-holder}.
+\end{proof}
+
+\begin{remark}[A strong form of $\Gamma$-convergence]
+The proof uses more than abstract $\Gamma$-convergence: the two-sided ratio
+bounds in \eqref{eq:perimeter-comparison} tend to one uniformly in $E$.  This
+does not assert a uniform additive bound on sets of unbounded perimeter.  The
+only nontrivial point is repairing the small mismatch between the two volume
+constraints.  This is why the entire stability theorem is short.
+\end{remark}
+
+\section{Isoperimetric constants, Cheeger sets, and the rough Laplacian}
+
+Define the scale-invariant relative isoperimetric constant and the Cheeger
+constant by
+\begin{align}
+ \cS(g)&:=\inf_{0<\mu_g(E)<V_g}
+ \frac{\Per_g(E)}
+ {\min\{\mu_g(E),\mu_g(M\setminus E)\}^{(n-1)/n}},
+ \label{eq:S-constant}\\
+ \hch(g)&:=\inf_{0<\mu_g(E)<V_g}
+ \frac{\Per_g(E)}
+ {\min\{\mu_g(E),\mu_g(M\setminus E)\}}.
+ \label{eq:Cheeger-constant}
+\end{align}
+The lower bound \eqref{eq:rough-relative-iso} shows that both are positive.
+The Cheeger infimum is attained: a minimising sequence cannot lose all of
+one phase, because its quotient would diverge like
+$\min\{\mu_g(E),\mu_g(E^c)\}^{-1/n}$; BV compactness and lower
+semicontinuity then apply.  This existence mechanism is a special case of the
+general relaxed-perimeter Cheeger theory; see, for example,
+\cite{FranceschiPinamontiSaraccoStefani2024}.  What is useful here is its
+placement in the Bandara--Hassan space, with the explicit stability constants
+below.
+
+\begin{theorem}[Log-Lipschitz geometric invariants]
+\label{thm:geometric-log-Lipschitz}
+For $g,\widetilde g\in\Met(M)$ and
+$\delta=\dMet(g,\widetilde g)$,
+\begin{align}
+ e^{-2(n-1)\delta}\cS(g)
+ &\leq\cS(\widetilde g)
+ \leq e^{2(n-1)\delta}\cS(g),
+ \label{eq:S-stability}\\
+ e^{-(2n-1)\delta}\hch(g)
+ &\leq\hch(\widetilde g)
+ \leq e^{(2n-1)\delta}\hch(g).
+ \label{eq:h-stability}
+\end{align}
+Equivalently, $\log\cS$ and $\log\hch$ are globally Lipschitz on the
+space of rough metrics, with constants $2(n-1)$ and $2n-1$, respectively.
+\end{theorem}
+
+\begin{proof}
+For every fixed set $E$, \eqref{eq:measure-comparison} compares the smaller
+phase volume by factors $e^{\pm n\delta}$, while
+\eqref{eq:perimeter-comparison} compares the numerator by factors
+$e^{\pm(n-1)\delta}$.  Raise the volume comparison to the power
+$(n-1)/n$ for \eqref{eq:S-stability}, and then take the infimum.  Without
+that power the exponents add to $2n-1$, giving \eqref{eq:h-stability}.
+\end{proof}
+
+We now turn to the operator-theoretic side.  The closed form
+\begin{equation}\label{eq:Dirichlet-form}
+ \cE_g(u):=\int_M |du|_{g^*}^2\dmu g,
+ \qquad u\in H^1(M,g),
+\end{equation}
+defines the nonnegative self-adjoint rough Laplacian $\Delta_g$.  On compact
+$M$, comparison with a smooth metric gives compact resolvent, and hence
+\[
+ 0=\lambda_0(g)<\lambda_1(g)\leq\lambda_2(g)\leq\cdots\nearrow\infty,
+\]
+with multiplicity.  This construction and much more of the analytic theory
+are developed in
+\cite{Bandara2016,BandaraBryan2020,BandaraNursultanovRowlett2021}.
+We stress that $\cE_g$ uses the full measurable coefficient tensor.  It need
+not coincide with the metric Cheeger energy of the pair consisting of Lashi's
+intrinsic distance and $\mu_g$; that pair can fail to recover the tensor
+\cite{BandaraHassan2025}.  For the same reason, $\Per_g$ is the relaxed rough
+perimeter defined in \eqref{eq:rough-TV}, not a naively induced hypersurface
+area or an unqualified metric-measure perimeter.
+
+\begin{theorem}[Every eigenvalue is stable]
+\label{thm:eigenvalue-stability}
+For $g,\widetilde g\in\Met(M)$, set
+$\delta=\dMet(g,\widetilde g)$.  Then, for every $k\geq1$,
+\begin{equation}\label{eq:eigenvalue-comparison}
+ e^{-2n\delta}\lambda_k(g)
+ \leq\lambda_k(\widetilde g)
+ \leq e^{2n\delta}\lambda_k(g).
+\end{equation}
+Thus $g\mapsto\log\lambda_k(g)$ is $2n$-Lipschitz on
+$(\Met(M),\dMet)$, uniformly in $k$.
+\end{theorem}
+
+\begin{proof}
+The form domains for $g$ and $\widetilde g$ agree as sets.  Lemma
+\ref{lem:cofactor}, with $p=2$, gives
+\[
+ e^{-n\delta}\cE_g(u)\leq\cE_{\widetilde g}(u)
+ \leq e^{n\delta}\cE_g(u),
+\]
+while \eqref{eq:measure-comparison} gives
+\[
+ e^{-n\delta}\|u\|_{L^2(g)}^2
+ \leq\|u\|_{L^2(\widetilde g)}^2
+ \leq e^{n\delta}\|u\|_{L^2(g)}^2.
+\]
+Therefore every Rayleigh quotient is compared by factors
+$e^{\pm2n\delta}$.  Apply the min--max characterisation of
+$\lambda_k$.
+\end{proof}
+
+The geometric and operator-theoretic quantities are related exactly as in the
+smooth setting.
+
+\begin{lemma}[A coarea inequality sufficient for Cheeger]
+\label{lem:weak-coarea}
+If $w$ is a nonnegative Lipschitz function on $M$, then
+\begin{equation}\label{eq:weak-coarea}
+ \int_0^\infty\Per_g(\{w>t\})\,dt
+ \leq\int_M|dw|_{g^*}\dmu g.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose a smooth nondecreasing $\eta:\R\to[0,1]$ which is zero on
+$(-\infty,0]$, one on $[1,\infty)$, and satisfies
+$\int_\R\eta'=1$.  For every $t$, as $\varepsilon\downarrow0$,
+\[
+ \eta\left(\frac{w-t}{\varepsilon}\right)
+ \longrightarrow\one_{\{w>t\}}
+ \quad\text{in }L^1.
+\]
+The displayed truncations are Lipschitz.  They may be approximated in
+$W^{1,1}$ by smooth functions; comparison with a smooth background metric
+and the Lipschitz estimate for $F_{g,h}$ show that their rough energies also
+converge.
+Consequently, with
+$v_{\varepsilon,t}:=\eta((w-t)/\varepsilon)$,
+\[
+ \TV_g(v_{\varepsilon,t})
+ \leq\int_M\frac1\varepsilon
+ \eta'\left(\frac{w-t}{\varepsilon}\right)|dw|_{g^*}\dmu g.
+\]
+As $\varepsilon\downarrow0$, these functions converge in $L^1$ to
+$\one_{\{w>t\}}$.  Lower semicontinuity gives
+$\Per_g(\{w>t\})\leq\liminf_{\varepsilon\downarrow0}
+\TV_g(v_{\varepsilon,t})$.  Fatou's lemma and Fubini's theorem therefore yield
+\begin{align*}
+ \int_0^\infty\Per_g(\{w>t\})\,dt
+ &\leq\liminf_{\varepsilon\downarrow0}
+ \int_\R\int_M
+ \frac1\varepsilon\eta'\left(\frac{w-t}{\varepsilon}\right)
+ |dw|_{g^*}\dmu g\,dt\\
+ &=\int_M|dw|_{g^*}\dmu g.
+\end{align*}
+\end{proof}
+
+\begin{theorem}[Cheeger's inequality for a rough metric]
+\label{thm:rough-Cheeger}
+For every rough metric on compact connected $M$,
+\begin{equation}\label{eq:rough-Cheeger}
+ \lambda_1(g)\geq\frac{\hch(g)^2}{4}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $u\in C^\infty(M)$ and choose a median $m$ of $u$, so that both
+$\{u>m\}$ and $\{u<m\}$ have measure at most $V_g/2$.  Put
+\[
+ u_+=(u-m)_+,
+ \qquad
+ u_-=(m-u)_+.
+\]
+If $f$ is either $u_+$ or $u_-$, apply
+Lemma~\ref{lem:weak-coarea} to $w=f^2$.  Every positive superlevel set of
+$w$ occupies at most half the volume, so the definition of $\hch(g)$ and
+the layer-cake formula give
+\begin{align*}
+ \hch(g)\int_M f^2\dmu g
+ &\leq\int_0^\infty\Per_g(\{f^2>t\})\,dt\\
+ &\leq2\int_M f|df|_{g^*}\dmu g\\
+ &\leq2\left(\int_M f^2\dmu g\right)^{1/2}
+       \left(\int_M|df|_{g^*}^2\dmu g\right)^{1/2}.
+\end{align*}
+Consequently,
+\[
+ \int_M|df|_{g^*}^2\dmu g
+ \geq\frac{\hch(g)^2}{4}\int_Mf^2\dmu g.
+\]
+The Sobolev chain rule gives
+$du_+=\one_{\{u>m\}}du$, $du_-=-\one_{\{u<m\}}du$, and $du=0$ almost
+everywhere on $\{u=m\}$.  Adding the estimates for $u_+$ and $u_-$ therefore
+gives
+\[
+ \cE_g(u)\geq\frac{\hch(g)^2}{4}
+ \int_M|u-m|^2\dmu g
+ \geq\frac{\hch(g)^2}{4}
+ \inf_{c\in\R}\int_M|u-c|^2\dmu g.
+\]
+Smooth density and the variational identity
+\[
+ \lambda_1(g)=\inf_{u\not\equiv\mathrm{const}}
+ \frac{\cE_g(u)}{\displaystyle
+  \inf_{c\in\R}\int_M|u-c|^2\dmu g}
+\]
+prove \eqref{eq:rough-Cheeger}.
+\end{proof}
+
+\section{What this says about rough CMC}
+
+For every rough metric and every prescribed
+volume, there is a rough isoperimetric region---a variational CMC analogue.
+These regions are stable
+under perturbation of the rough metric in exactly the topology introduced by
+Bandara and Hassan.  No Christoffel symbols and no derivatives of $g$ enter.
+
+When $g$ is smooth, standard isoperimetric regularity
+\cite{Maggi2012} says that the reduced boundary of $E_v$ is a smooth embedded
+CMC hypersurface away from a singular set of Hausdorff dimension at most
+$n-8$.  Thus the singular set is empty when
+$2\leq n\leq7$.  In this regime our variational definition returns the usual
+CMC equation
+\[
+ H_g=\lambda
+\]
+on the regular boundary, with $\lambda$ the volume-constraint multiplier.
+
+For a genuinely rough metric we should resist writing this equation too
+early.  The geometric question is instead a regularity ladder.
+
+\begin{enumerate}
+\item \emph{Measurable coefficients.}  Existence, compactness, coarea,
+  Cheeger theory, and spectral comparison survive.  Classical hypersurface
+  regularity need not survive, and the relaxed perimeter may encode a
+  nontrivial effective surface tension.
+\item \emph{VMO, Dini, or H\"older coefficients.}  Determine the weakest
+  modulus under which excess decay and partial regularity hold for
+  $\Per_g$-minimisers.  This is the natural interface with the regularity
+  theory of elliptic parametric integrals.
+\item \emph{Differentiable coefficients.}  Identify a threshold at which the
+  first variation exists in a sufficiently strong form, recover a weak CMC
+  equation, and bootstrap it to the regularity permitted by $g$.
+\end{enumerate}
+
+A minimising movement scheme could be used to construct a rough volume-preserving mean-curvature flow, perhaps in another paper.
+
+\section{Some ideas}
+
+The results above can form the core of a  first paper.
+Here are some more things to do.
+
+\begin{enumerate}
+\item Write the manifold version of the Amar--Bellettini dual
+  representation explicitly.  The relaxation definition
+  \eqref{eq:rough-TV} is already invariant and sufficient for all the
+  theorems above; the dual formula will clarify calibrations and is a
+  prerequisite for formulating a weak mean-curvature theory.
+\item Decide the first useful regularity threshold.  The most efficient target
+  is probably $g\in C^{0,\alpha}$ for partial regularity, followed by
+  $g\in C^{1,\alpha}$ for the classical CMC equation.  The merely measurable
+  theorem should remain as the compactness base case.
+\item Study uniqueness and quantitative stability near a nondegenerate smooth
+  isoperimetric region.  Theorem~\ref{thm:profile-stability} gives compactness;
+  an implicit-function or second-variation argument should upgrade this to
+  convergence without subsequences and, under a spectral gap, a rate.
+\item Then return to the Almgren--Taylor--Wang step.  Use the relaxed
+  perimeter as the energy and Lashi's intrinsic distance for the mobility
+  term.  Direct-method and almost-minimality arguments should then go through with the geometrically correct energy.
+\end{enumerate}
+
+My main point is that we already have an interesting theorem: rough isoperimetric regions exist and vary continuously with the
+rough metric, while the profiles vary H\"older-continuously and the associated
+geometric and spectral bottleneck
+quantities vary quantitatively.  The remaining CMC problem is a precise and
+natural regularity problem rather than an existence problem.
+
+\begin{thebibliography}{99}
+
+\bibitem{AmarBellettini1994}
+M.~Amar and G.~Bellettini,
+\newblock A notion of total variation depending on a metric with discontinuous
+coefficients,
+\newblock \emph{Ann. Inst. H. Poincar\'e Anal. Non Lin\'eaire} \textbf{11}
+(1994), no.~1, 91--133.
+
+\bibitem{AFP2000}
+L.~Ambrosio, N.~Fusco and D.~Pallara,
+\newblock \emph{Functions of bounded variation and free discontinuity
+problems},
+\newblock Oxford Mathematical Monographs, Oxford University Press, 2000.
+
+\bibitem{Bandara2016}
+L.~Bandara,
+\newblock Rough metrics on manifolds and quadratic estimates,
+\newblock \emph{Math. Z.} \textbf{283} (2016), no.~3--4, 1245--1281.
+
+\bibitem{BandaraBryan2020}
+L.~Bandara and P.~Bryan,
+\newblock Heat kernels and regularity for rough metrics on smooth manifolds,
+\newblock \emph{Math. Nachr.} \textbf{293} (2020), no.~12, 2255--2270.
+
+\bibitem{BandaraHassan2025}
+L.~Bandara and A.~Hassan,
+\newblock The space of rough Riemannian metrics,
+\newblock preprint, \href{https://arxiv.org/abs/2507.10274}{arXiv:2507.10274}
+(2025).
+
+\bibitem{BandaraNursultanovRowlett2021}
+L.~Bandara, M.~Nursultanov and J.~Rowlett,
+\newblock Eigenvalue asymptotics for weighted Laplace equations on rough
+Riemannian manifolds with boundary,
+\newblock \emph{Ann. Sc. Norm. Super. Pisa Cl. Sci. (5)} \textbf{22} (2021),
+no.~4, 1843--1878.
+
+\bibitem{BellettiniBouchitteFragala1999}
+G.~Bellettini, G.~Bouchitt\'e and I.~Fragal\`a,
+\newblock BV functions with respect to a measure and relaxation of metric
+integral functionals,
+\newblock \emph{J. Convex Anal.} \textbf{6} (1999), no.~2, 349--366.
+
+\bibitem{Cheeger1970}
+J.~Cheeger,
+\newblock A lower bound for the smallest eigenvalue of the Laplacian,
+\newblock in \emph{Problems in analysis}, Princeton University Press, 1970,
+195--199.
+
+\bibitem{FranceschiPinamontiSaraccoStefani2024}
+V.~Franceschi, A.~Pinamonti, G.~Saracco and G.~Stefani,
+\newblock The Cheeger problem in abstract measure spaces,
+\newblock \emph{J. Lond. Math. Soc. (2)} \textbf{109} (2024), no.~1,
+Paper No.~e12840.
+
+\bibitem{Maggi2012}
+F.~Maggi,
+\newblock \emph{Sets of finite perimeter and geometric variational problems},
+\newblock Cambridge Studies in Advanced Mathematics, vol.~135, Cambridge
+University Press, 2012.
+
+\bibitem{Zheng2020}
+Y.~Zheng,
+\newblock Uniform Lipschitz continuity of the isoperimetric profile of compact
+surfaces under normalized Ricci flow,
+\newblock preprint, \href{https://arxiv.org/abs/2001.00341}{arXiv:2001.00341}
+(2020).
+
+\end{thebibliography}
+
+\end{document}
